@@ -16,10 +16,16 @@ import java.util.HashMap;
 public class JHoconWriter extends JsonWriterStub {
     private Node curr = new Node();
 
+    /**
+     * @return writing output
+     */
     public Object output() {
         return curr.getValue();
     }
 
+    /**
+     * Set comment to current node.
+     */
     public void setComment(String comment) {
         curr.comment = comment;
     }

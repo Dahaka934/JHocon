@@ -249,6 +249,9 @@ public final class JHocon {
         }
     }
 
+    /**
+     * Safe hook for insert comment to writer.
+     */
     public static void setComment(JsonWriter writer, String comment) {
         if (writer instanceof JHoconWriter) {
             ((JHoconWriter) writer).setComment(comment);
