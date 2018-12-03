@@ -3,10 +3,13 @@ package com.github.dahaka934.jhocon;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueFactory;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 /**
  * Wrapper of {@link Gson}.<br/>
@@ -73,6 +76,40 @@ public final class JHocon {
     public ConfigValue toConfigValue(Object src) throws JsonIOException {
         src = safeObject(src);
         return toConfigValue(src, src.getClass());
+    }
+
+
+    /**
+     * Analog of {@link Gson#toJson(Object, Type)}.
+     *
+     * @param src the generic object for which {@link Config} representation is to be created.
+     * @param typeOfSrc The specific genericized type of {@code src}.
+     * @return {@link Config} representation of {@code src}.
+     * @throws JsonIOException if there was a problem writing to the writer.
+     */
+    @SuppressWarnings("unchecked")
+    public Config toConfig(Object src, Type typeOfSrc) throws JsonIOException {
+        Object view = toObjectTree(src, typeOfSrc);
+        try {
+            if (view instanceof Map) {
+                return ConfigFactory.parseMap((Map<String, Object>) view);
+            }
+        } catch (Exception e) {
+            throw new JsonIOException(e);
+        }
+        throw new JsonIOException("Object tree must be map");
+    }
+
+    /**
+     * Analog of {@link Gson#toJson(Object)}.
+     *
+     * @param src the non-generic object for which {@link Config} representation is to be created.
+     * @return {@link Config} representation of {@code src}.
+     * @throws JsonIOException if there was a problem writing to the writer.
+     */
+    public Config toConfig(Object src) throws JsonIOException {
+        src = safeObject(src);
+        return toConfig(src, src.getClass());
     }
 
     private static Object safeObject(Object obj) {
