@@ -201,7 +201,8 @@ public class JHoconReader extends JsonReaderStub {
             setCursor(iteratorValues.hasNext() ? iteratorValues.next() : null);
         }
 
-        @Override Type getType() { return Type.OBJECT; }
+        @Override
+        Type getType() { return Type.OBJECT; }
 
         @Override
         void signalReadMap() {
