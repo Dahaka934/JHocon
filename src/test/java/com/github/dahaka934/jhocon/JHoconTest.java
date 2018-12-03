@@ -1,6 +1,7 @@
 package com.github.dahaka934.jhocon;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,6 +44,7 @@ public class JHoconTest extends Assert {
     }
 
     static class SimpleSubClass {
+        @JsonAdapter(SimpleStringTypeAdapter.class)
         String str = "some text";
     }
 
