@@ -14,6 +14,7 @@ public class SimpleStringTypeAdapter extends TypeAdapter<String> {
             out.nullValue();
             return;
         }
+        JHocon.setComment(out, "string was hacked");
         out.value(value + " hack");
     }
 

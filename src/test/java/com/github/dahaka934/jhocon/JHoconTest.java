@@ -78,7 +78,7 @@ public class JHoconTest extends Assert {
 
         String hocon = jhocon.toHocon("root", obj);
 
-        System.out.println("Object to Hocon:");
+        System.out.println("Map of objects to Hocon:");
         System.out.println(hocon);
         System.out.println();
 

@@ -4,6 +4,7 @@ import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.JsonWriterStub;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigValueFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +20,13 @@ public class JHoconWriter extends JsonWriterStub {
         return curr.getValue();
     }
 
+    public void setComment(String comment) {
+        curr.comment = comment;
+    }
+
     private static class Node {
         private Object value;
+        private String comment = null;
         private Node prev = this;
 
         Node() {}
@@ -38,26 +44,28 @@ public class JHoconWriter extends JsonWriterStub {
         }
 
         void put(Object value) {
-            this.value = value;
+            this.value = convert(value);
+        }
+
+        Object convert(Object value) {
+            return ConfigValueFactory.fromAnyRef(value, comment);
         }
 
         Node beginArray() throws IOException {
-            Node next = new NodeArray(this);
-            put(next.getValue());
-            return next;
+            return new NodeArray(this);
         }
 
         Node endArray() throws IOException {
+            prev.put(getValue());
             return prev;
         }
 
         Node beginObject() throws IOException {
-            Node next = new NodeObject(this);
-            put(next.getValue());
-            return next;
+            return new NodeObject(this);
         }
 
         Node endObject() throws IOException {
+            prev.put(getValue());
             return prev;
         }
 
@@ -94,7 +102,7 @@ public class JHoconWriter extends JsonWriterStub {
         @Override
         @SuppressWarnings("unchecked")
         void put(Object value) {
-            ((HashMap<String, Object>) getValue()).put(name, value);
+            ((HashMap<String, Object>) getValue()).put(name, convert(value));
         }
 
         @Override
@@ -112,7 +120,7 @@ public class JHoconWriter extends JsonWriterStub {
         @Override
         @SuppressWarnings("unchecked")
         void put(Object value) {
-            ((ArrayList<Object>) getValue()).add(value);
+            ((ArrayList<Object>) getValue()).add(convert(value));
         }
 
         @Override

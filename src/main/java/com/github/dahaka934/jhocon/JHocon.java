@@ -5,6 +5,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.Primitives;
+import com.google.gson.stream.JsonWriter;
 import com.typesafe.config.*;
 
 import java.io.Reader;
@@ -245,6 +246,12 @@ public final class JHocon {
             return configValue.render(opts);
         } catch (Throwable throwable) {
             throw new JsonSyntaxException(throwable);
+        }
+    }
+
+    public static void setComment(JsonWriter writer, String comment) {
+        if (writer instanceof JHoconWriter) {
+            ((JHoconWriter) writer).setComment(comment);
         }
     }
 
