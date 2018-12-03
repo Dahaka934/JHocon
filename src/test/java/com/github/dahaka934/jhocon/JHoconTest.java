@@ -1,9 +1,11 @@
 package com.github.dahaka934.jhocon;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ public class JHoconTest extends Assert {
             objList.add(new SimpleSubClass());
         }
 
-        void reinit() {
+        SimpleClass reinit() {
             publicInt = 7;
             privateBoolean = false;
             intArray = new int[]{5, 2, 3, 8};
@@ -35,6 +37,8 @@ public class JHoconTest extends Assert {
             stringIntMap.put("key2", 2);
             stringIntMap.put("key3", 3);
             objList.add(new SimpleSubClass());
+
+            return this;
         }
     }
 
@@ -61,5 +65,25 @@ public class JHoconTest extends Assert {
         assertArrayEquals(obj.intArray, newObj.intArray);
         assertEquals(obj.stringIntMap.size(), newObj.stringIntMap.size());
         assertEquals(obj.objList.size(), newObj.objList.size());
+    }
+
+    @Test
+    public void testGenericObject() {
+        JHocon jhocon = new JHocon(new Gson());
+        Map<String, SimpleClass> obj = new HashMap<>();
+        obj.put("default", new SimpleClass());
+        obj.put("reinited", new SimpleClass().reinit());
+
+        String hocon = jhocon.toHocon(obj);
+
+        System.out.println("Object to Hocon:");
+        System.out.println(hocon);
+        System.out.println();
+
+        Type type = new TypeToken<Map<String, SimpleClass>>() {
+        }.getType();
+        Map<String, SimpleClass> newObj = jhocon.fromHocon(hocon, type);
+
+        assertEquals(obj.size(), newObj.size());
     }
 }
