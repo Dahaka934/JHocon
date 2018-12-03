@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.internal.Primitives;
 import com.typesafe.config.*;
 
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -148,6 +150,72 @@ public final class JHocon {
      */
     public String toHocon(Object src) throws JsonIOException {
         return toHocon(src, (ConfigRenderOptions) null);
+    }
+
+    /**
+     * Analog of {@link Gson#fromJson(Reader, Type)}.
+     *
+     * @param <T> the type of the desired object
+     * @param configValue the hocon parsed value
+     * @param typeOfT The specific genericized type of {@code src}
+     * @return an object of type T
+     * @throws JsonIOException if there was a problem reading from {@link ConfigValue}
+     * @throws JsonSyntaxException if {@link ConfigValue} is not a valid representation for an object of type
+     */
+    public <T> T fromHocon(ConfigValue configValue, Type typeOfT) throws JsonIOException, JsonSyntaxException {
+        JHoconReader reader = new JHoconReader(configValue.unwrapped());
+        return gson.fromJson(reader, typeOfT);
+    }
+
+    /**
+     * Analog of {@link Gson#fromJson(Reader, Class)}
+     *
+     * @param <T> the type of the desired object
+     * @param configValue the hocon parsed value
+     * @param classOfT the class of T
+     * @return an object of type T
+     * @throws JsonIOException if there was a problem reading from {@link ConfigValue}
+     * @throws JsonSyntaxException if {@link ConfigValue} is not a valid representation for an object of type
+     */
+    public <T> T fromHocon(ConfigValue configValue, Class<T> classOfT) throws JsonSyntaxException {
+        T object = fromHocon(configValue, (Type) classOfT);
+        return Primitives.wrap(classOfT).cast(object);
+    }
+
+    /**
+     * Analog of {@link Gson#fromJson(String, Type)}.
+     *
+     * @param <T> the type of the desired object
+     * @param hocon the hocon string
+     * @param typeOfT The specific genericized type of {@code src}
+     * @return an object of type T
+     * @throws JsonIOException if there was a problem reading from hocon string
+     * @throws JsonSyntaxException if hocon string is not a valid representation for an object of type
+     */
+    public <T> T fromHocon(String hocon, Type typeOfT) throws JsonSyntaxException {
+        Config config;
+        try {
+            config = ConfigFactory.parseString(hocon);
+        } catch (Exception e) {
+            throw new JsonIOException(e);
+        }
+
+        return fromHocon(config.root(), typeOfT);
+    }
+
+    /**
+     * Analog of {@link Gson#fromJson(String, Class)}
+     *
+     * @param <T> the type of the desired object
+     * @param hocon the hocon string
+     * @param classOfT the class of T
+     * @return an object of type T
+     * @throws JsonIOException if there was a problem reading from hocon string
+     * @throws JsonSyntaxException if hocon string is not a valid representation for an object of type
+     */
+    public <T> T fromHocon(String hocon, Class<T> classOfT) throws JsonSyntaxException {
+        T object = fromHocon(hocon, (Type) classOfT);
+        return Primitives.wrap(classOfT).cast(object);
     }
 
     private static Object safeObject(Object obj) {
