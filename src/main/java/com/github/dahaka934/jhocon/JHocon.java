@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
 
-import java.io.Writer;
 import java.lang.reflect.Type;
 
 /**
