@@ -3,10 +3,8 @@ package com.github.dahaka934.jhocon;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigValue;
-import com.typesafe.config.ConfigValueFactory;
+import com.google.gson.JsonSyntaxException;
+import com.typesafe.config.*;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -114,5 +112,16 @@ public final class JHocon {
 
     private static Object safeObject(Object obj) {
         return obj != null ? obj : JsonNull.INSTANCE;
+    }
+
+    private static String renderConfig(ConfigValue configValue, ConfigRenderOptions opts)
+        throws JsonSyntaxException {
+
+        opts = opts != null ? opts : ConfigRenderOptions.defaults().setJson(false).setOriginComments(false);
+        try {
+            return configValue.render(opts);
+        } catch (Throwable throwable) {
+            throw new JsonIOException(throwable);
+        }
     }
 }
