@@ -52,13 +52,13 @@ public class JHoconTest extends Assert {
         SimpleClass obj = new SimpleClass();
         obj.reinit();
 
-        String hocon = jhocon.toHocon(obj);
+        String hocon = jhocon.toHocon("root", obj);
 
         System.out.println("Object to Hocon:");
         System.out.println(hocon);
         System.out.println();
 
-        SimpleClass newObj = jhocon.fromHocon(hocon, SimpleClass.class);
+        SimpleClass newObj = jhocon.fromHocon(hocon, "root", SimpleClass.class);
 
         assertEquals(obj.publicInt, newObj.publicInt);
         assertEquals(obj.privateBoolean, newObj.privateBoolean);
@@ -74,7 +74,7 @@ public class JHoconTest extends Assert {
         obj.put("default", new SimpleClass());
         obj.put("reinited", new SimpleClass().reinit());
 
-        String hocon = jhocon.toHocon(obj);
+        String hocon = jhocon.toHocon("root", obj);
 
         System.out.println("Object to Hocon:");
         System.out.println(hocon);
@@ -82,7 +82,7 @@ public class JHoconTest extends Assert {
 
         Type type = new TypeToken<Map<String, SimpleClass>>() {
         }.getType();
-        Map<String, SimpleClass> newObj = jhocon.fromHocon(hocon, type);
+        Map<String, SimpleClass> newObj = jhocon.fromHocon(hocon, "root", type);
 
         assertEquals(obj.size(), newObj.size());
     }
