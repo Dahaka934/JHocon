@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-public class SimpleStringTypeAdapter extends TypeAdapter<String> {
+public class TestTypeAdapter extends TypeAdapter<String> {
     @Override
     public void write(JsonWriter out, String value) throws IOException {
         if (value == null) {

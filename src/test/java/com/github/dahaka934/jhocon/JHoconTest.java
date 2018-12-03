@@ -44,7 +44,7 @@ public class JHoconTest extends Assert {
     }
 
     static class SimpleSubClass {
-        @JsonAdapter(SimpleStringTypeAdapter.class)
+        @JsonAdapter(TestTypeAdapter.class)
         String str = "some text";
     }
 
