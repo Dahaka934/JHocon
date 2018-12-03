@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Using to write object to specific structure instead of json.
+ * Using for write object to specific structure instead of json.
  */
 public class JHoconWriter extends JsonWriterStub {
     private Node curr = new Node();
