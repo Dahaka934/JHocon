@@ -19,11 +19,12 @@ public final class JHocon {
     }
 
     /**
-     * Analog of {@link Gson#toJson(Object, Type)}
+     * Analog of {@link Gson#toJson(Object, Type)}.
      *
-     * @param src the object for which object tree representation is to be created
+     * @param src the generic object for which object tree representation is to be created.
      * @param typeOfSrc The specific genericized type of src.
-     * @throws JsonIOException if there was a problem writing to the writer
+     * @return object tree representation of {@code src}.
+     * @throws JsonIOException if there was a problem writing to the writer.
      */
     public Object toObjectTree(Object src, Type typeOfSrc) throws JsonIOException {
         JHoconWriter writer = new JHoconWriter();
@@ -32,11 +33,11 @@ public final class JHocon {
     }
 
     /**
-     * Analog of {@link Gson#toJson(Object)}
+     * Analog of {@link Gson#toJson(Object)}.
      *
-     * @param src the object for which object tree representation is to be created
+     * @param src the non-generic object for which object tree representation is to be created.
      * @return object tree representation of {@code src}.
-     * @throws JsonIOException if there was a problem writing to the writer
+     * @throws JsonIOException if there was a problem writing to the writer.
      */
     public Object toObjectTree(Object src) throws JsonIOException {
         src = safeObject(src);
