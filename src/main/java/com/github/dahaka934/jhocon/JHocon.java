@@ -210,14 +210,14 @@ public final class JHocon {
      * @throws JsonSyntaxException if hocon string is not a valid representation for an object of type
      */
     public <T> T fromHocon(String hocon, String name, Type typeOfT) throws JsonSyntaxException {
-        Config config;
+        ConfigValue config;
         try {
-            config = ConfigFactory.parseString(hocon).getConfig(name);
+            config = ConfigFactory.parseString(hocon).getValue(name);
         } catch (Exception e) {
             throw new JsonSyntaxException(e);
         }
 
-        return fromHocon(config.root(), typeOfT);
+        return fromHocon(config, typeOfT);
     }
 
     /**
