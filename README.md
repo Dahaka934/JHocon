@@ -1,5 +1,6 @@
 # JHocon
-This is a Gson wrapper using Typesafe Config for supporting HOCON files.
+This is a [Gson](https://github.com/google/gson) wrapper using 
+[Typesafe Config](https://github.com/lightbend/config) for supporting HOCON files.
 JHocon overrides Gson' JsonWriter and JsonReader and a gives full compatibility with Gson.
 JHocon providing simple helper functions to convert between Hocon and Java Objects.
 Also, supported all Gson' TypeAdapters, TypeAdapterFactories and annotations.
