@@ -1,0 +1,11 @@
+#IDE
+.idea/
+*.ipr
+*.iws
+out/
+
+#Gradle
+build/
+.gradle
+ui/*
+gradle-app.setting
