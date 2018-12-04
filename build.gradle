@@ -3,11 +3,20 @@ buildscript {
         mavenCentral()
         jcenter()
     }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.1'
+    }
 }
 
-plugins {
-    id 'java'
+repositories {
+    jcenter()
 }
+
+apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
+
+group = 'com.github.dahaka934'
+version = '0.0.1'
 
 sourceCompatibility = 1.8
 
@@ -20,4 +29,26 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+publish {
+    if (!project.hasProperty('bintrayUser')) {
+        project.ext.bintrayUser = System.getenv('BINTRAY_USER')
+    }
+    if (!project.hasProperty('bintrayKey')) {
+        project.ext.bintrayKey = System.getenv('BINTRAY_KEY')
+    }
+    if (!project.hasProperty('dryRun')) {
+        project.ext.dryRun = 'false'
+    }
+
+    userOrg = 'dahaka934'
+    groupId = project.group
+    artifactId = 'jhocon'
+    publishVersion = project.version
+    desc = 'Gson wrapper for Typesafe Config (HOCON)'
+    licences = ['Apache-2.0']
+    website = 'https://github.com/Dahaka934/JHocon'
+    issueTracker = 'https://github.com/Dahaka934/JHocon/issues'
+    repository = 'https://github.com/Dahaka934/JHocon.git'
 }
