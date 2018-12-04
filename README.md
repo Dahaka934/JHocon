@@ -18,7 +18,7 @@ public final class Person {
     }
 }
 ```
-### Converting non-generic object:
+### Converting non-generic object
 ```java
 JHocon jhocon = new JHocon(new Gson());
 Person person = new Person("foo", 20);
@@ -30,14 +30,14 @@ String hocon = jhocon.toHocon("person", person);
 Person personNew = jhocon.fromHocon(hocon, "person", Person.class);
 ```
 Output hocon string:
-```
+```hocon
 person {
     age=20
     name=foo
 }
 ```
 
-### Converting generic object:
+### Converting generic object
 ```java
 JHocon jhocon = new JHocon(new Gson());
 List<Person> family = new ArrayList<>();
@@ -52,7 +52,7 @@ Type type = new TypeToken<List<Person>>() {}.getType();
 List<Person> familyNew = jhocon.fromHocon(hocon, "family", type);
 ```
 Output hocon string:
-```
+```hocon
 family=[
     {
         age=20
