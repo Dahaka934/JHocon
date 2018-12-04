@@ -81,6 +81,11 @@ public final class JHocon {
      * @return {@link ConfigValue} representation of {@code src}
      * @throws JsonIOException if there was a problem writing to the writer
      */
+    /**
+     * @param src
+     * @return
+     * @throws JsonIOException
+     */
     public ConfigValue toConfigValue(Object src) throws JsonIOException {
         src = safeObject(src);
         return toConfigValue(src, src.getClass());
@@ -254,9 +259,9 @@ public final class JHocon {
     /**
      * Safe hook for insert comment to writer.
      */
-    public static void setComment(JsonWriter writer, String comment) {
+    public static void comment(JsonWriter writer, String comment) {
         if (writer instanceof JHoconWriter) {
-            ((JHoconWriter) writer).setComment(comment);
+            ((JHoconWriter) writer).comment(comment);
         }
     }
 
