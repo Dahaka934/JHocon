@@ -1,5 +1,7 @@
 package com.github.dahaka934.jhocon;
 
+import com.github.dahaka934.jhocon.reader.JHoconReader;
+import com.github.dahaka934.jhocon.writer.JHoconWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
