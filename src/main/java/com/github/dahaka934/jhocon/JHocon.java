@@ -51,8 +51,8 @@ public final class JHocon {
      * @throws JsonIOException if there was a problem writing to the writer
      */
     public Object toObjectTree(Object src) throws JsonIOException {
-        src = safeObject(src);
-        return toObjectTree(src, src.getClass());
+        Object obj = safeObject(src);
+        return toObjectTree(obj, obj.getClass());
     }
 
     /**
@@ -87,8 +87,8 @@ public final class JHocon {
      * @throws JsonIOException
      */
     public ConfigValue toConfigValue(Object src) throws JsonIOException {
-        src = safeObject(src);
-        return toConfigValue(src, src.getClass());
+        Object obj = safeObject(src);
+        return toConfigValue(obj, obj.getClass());
     }
 
     /**
@@ -123,8 +123,8 @@ public final class JHocon {
      * @throws JsonIOException if there was a problem writing to the writer
      */
     public Config toConfig(String name, Object src) throws JsonIOException {
-        src = safeObject(src);
-        return toConfig(name, src, src.getClass());
+        Object obj = safeObject(src);
+        return toConfig(name, obj, obj.getClass());
     }
 
     /**
@@ -154,8 +154,8 @@ public final class JHocon {
      * @throws JsonIOException if there was a problem writing to the writer
      */
     public String toHocon(String name, Object src, ConfigRenderOptions opts) throws JsonIOException {
-        src = safeObject(src);
-        return toHocon(name, src, src.getClass(), opts);
+        Object obj = safeObject(src);
+        return toHocon(name, obj, obj.getClass(), opts);
     }
 
     /**
@@ -248,9 +248,11 @@ public final class JHocon {
      * Renders the config value to a string, using the provided options.
      */
     public static String renderConfig(ConfigValue configValue, ConfigRenderOptions opts) throws JsonSyntaxException {
-        opts = opts != null ? opts : ConfigRenderOptions.defaults().setJson(false).setOriginComments(false);
+        ConfigRenderOptions options = opts != null
+            ? opts
+            : ConfigRenderOptions.defaults().setJson(false).setOriginComments(false);
         try {
-            return configValue.render(opts);
+            return configValue.render(options);
         } catch (Throwable throwable) {
             throw new JsonSyntaxException(throwable);
         }
