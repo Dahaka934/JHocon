@@ -14,9 +14,8 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: 'com.novoda.bintray-release'
-
-group = 'com.github.dahaka934'
-version = '0.0.1'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 
@@ -31,24 +30,68 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-publish {
-    if (!project.hasProperty('bintrayUser')) {
-        project.ext.bintrayUser = System.getenv('BINTRAY_USER')
-    }
-    if (!project.hasProperty('bintrayKey')) {
-        project.ext.bintrayKey = System.getenv('BINTRAY_KEY')
-    }
-    if (!project.hasProperty('dryRun')) {
-        project.ext.dryRun = 'false'
-    }
+group = 'com.github.dahaka934'
+version = '0.0.2'
+description = 'Gson wrapper for Typesafe Config (HOCON)'
 
+ext {
+    artifactId = 'jhocon'
+    gitUrl = 'https://github.com/Dahaka934/JHocon'
+    licence = 'Apache-2.0'
+}
+
+publish {
     userOrg = 'dahaka934'
     groupId = project.group
-    artifactId = 'jhocon'
+    artifactId = project.artifactId
     publishVersion = project.version
-    desc = 'Gson wrapper for Typesafe Config (HOCON)'
-    licences = ['Apache-2.0']
-    website = 'https://github.com/Dahaka934/JHocon'
-    issueTracker = 'https://github.com/Dahaka934/JHocon/issues'
-    repository = 'https://github.com/Dahaka934/JHocon.git'
+    desc = project.description
+    licences = [project.licence]
+    website = project.gitUrl
+
+    if (!project.hasProperty('bintrayUser')) {
+        bintrayUser = System.getenv('BINTRAY_USER')
+    }
+    if (!project.hasProperty('bintrayKey')) {
+        bintrayKey = System.getenv('BINTRAY_KEY')
+    }
+    if (!project.hasProperty('dryRun')) {
+        dryRun = false
+    }
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    tasks.generatePomFileForMavenPublication.doLast {
+        file("build/publications/maven/pom-default.xml ").delete()
+        pom {
+            project {
+                name "$project.name"
+                artifactId project.artifactId
+                packaging project.name == 'compiler' ? 'jar' : 'aar'
+                description project.description
+                url project.gitUrl
+                version project.version
+
+                scm {
+                    url project.gitUrl
+                    connection project.gitUrl
+                    developerConnection project.gitUrl
+                }
+
+                licenses {
+                    license {
+                        name project.licence
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'Dahaka934'
+                        name 'Mikhail Abakumov'
+                        email 'dahaka934@gmail.com'
+                    }
+                }
+            }
+        }.writeTo("build/publications/maven/pom-default.xml")
+    }
 }
