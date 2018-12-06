@@ -1,4 +1,6 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dahaka934/jhocon/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dahaka934/jhocon)
 # JHocon
+
 This is a [Gson](https://github.com/google/gson) wrapper using 
 [Typesafe Config](https://github.com/lightbend/config) for supporting HOCON files.
 JHocon overrides Gson' JsonWriter and JsonReader and a gives full compatibility with Gson.
