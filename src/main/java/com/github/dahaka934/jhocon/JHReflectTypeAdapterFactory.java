@@ -13,7 +13,7 @@ import java.util.List;
 
 public class JHReflectTypeAdapterFactory extends ReflectiveTypeAdapterFactoryEx {
 
-    private List<FieldHandler> handlers = new ArrayList<>();
+    protected final List<FieldHandler> handlers = new ArrayList<>();
 
     /**
      * Register custom {@link FieldHandler}.
