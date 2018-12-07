@@ -15,9 +15,9 @@ import java.lang.reflect.Field;
 public class FieldHandlerComment implements FieldHandler {
     @Override
     public void onWrite(JsonWriter writer, Field field, Object value) {
-        Comment comment = field.getAnnotation(Comment.class);
-        if (comment != null) {
-            String line = comment.value();
+        Comment ann = field.getAnnotation(Comment.class);
+        if (ann != null) {
+            String line = ann.value();
             if (line.contains("$value")) {
                 line = line.replace("$value", JHoconHelper.objectToString(value));
             }
