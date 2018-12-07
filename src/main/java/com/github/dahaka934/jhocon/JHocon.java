@@ -7,7 +7,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.Primitives;
-import com.google.gson.stream.JsonWriter;
 import com.typesafe.config.*;
 
 import java.io.Reader;
@@ -140,7 +139,7 @@ public final class JHocon {
      */
     public String toHocon(String name, Object src, Type typeOfSrc, ConfigRenderOptions opts) throws JsonIOException {
         Config config = toConfig(name, src, typeOfSrc);
-        return renderConfig(config.root(), opts);
+        return JHoconHelper.renderConfig(config.root(), opts);
     }
 
     /**
@@ -242,29 +241,6 @@ public final class JHocon {
     public <T> T fromHocon(String hocon, String name, Class<T> classOfT) throws JsonSyntaxException {
         T object = fromHocon(hocon, name, (Type) classOfT);
         return Primitives.wrap(classOfT).cast(object);
-    }
-
-    /**
-     * Renders the config value to a string, using the provided options.
-     */
-    public static String renderConfig(ConfigValue configValue, ConfigRenderOptions opts) throws JsonSyntaxException {
-        ConfigRenderOptions options = opts != null
-            ? opts
-            : ConfigRenderOptions.defaults().setJson(false).setOriginComments(false);
-        try {
-            return configValue.render(options);
-        } catch (Throwable throwable) {
-            throw new JsonSyntaxException(throwable);
-        }
-    }
-
-    /**
-     * Safe hook for insert comment to writer.
-     */
-    public static void comment(JsonWriter writer, String comment) {
-        if (writer instanceof JHoconWriter) {
-            ((JHoconWriter) writer).comment(comment);
-        }
     }
 
     private static Object safeObject(Object obj) {

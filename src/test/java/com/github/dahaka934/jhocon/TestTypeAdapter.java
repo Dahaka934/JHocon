@@ -14,7 +14,7 @@ public class TestTypeAdapter extends TypeAdapter<String> {
             out.nullValue();
             return;
         }
-        JHocon.comment(out, "string was hacked");
+        JHoconHelper.comment(out, "string was hacked");
         out.value(value + " hack");
     }
 
