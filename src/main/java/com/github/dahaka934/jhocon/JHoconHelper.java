@@ -1,5 +1,6 @@
 package com.github.dahaka934.jhocon;
 
+import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerComment;
 import com.github.dahaka934.jhocon.writer.JHoconWriter;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -19,6 +20,7 @@ public final class JHoconHelper {
      */
     public static GsonBuilder initBuilder(GsonBuilder builder) {
         JHReflectTypeAdapterFactory factory = new JHReflectTypeAdapterFactory();
+        factory.register(new FieldHandlerComment());
         builder.registerTypeAdapterFactory(factory);
         return builder;
     }
