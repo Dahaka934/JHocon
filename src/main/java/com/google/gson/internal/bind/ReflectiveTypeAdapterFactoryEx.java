@@ -21,7 +21,7 @@ import java.util.*;
 
 /**
  * Hack.
- * Allows create custom {@link ReflectiveTypeAdapterFactory}.
+ * This {@link TypeAdapterFactory} analog of {@link ReflectiveTypeAdapterFactory}.
  * Provides several public methods for custom field handling (by annotation).
  */
 public abstract class ReflectiveTypeAdapterFactoryEx implements TypeAdapterFactory {
