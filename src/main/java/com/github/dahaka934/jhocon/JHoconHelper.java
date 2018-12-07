@@ -49,7 +49,7 @@ public final class JHoconHelper {
     /**
      * Convert object to string.
      */
-    public static String toString(Object obj) {
+    public static String objectToString(Object obj) {
         if (obj == null) {
             return "(null)";
         } else if (!obj.getClass().isArray()) {
