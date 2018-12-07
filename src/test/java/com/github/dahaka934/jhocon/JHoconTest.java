@@ -1,5 +1,7 @@
 package com.github.dahaka934.jhocon;
 
+import com.github.dahaka934.jhocon.annotations.Comment;
+import com.github.dahaka934.jhocon.annotations.CommentDefaultValue;
 import com.github.dahaka934.jhocon.internal.TestTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,8 +19,10 @@ import java.util.Map;
 public class JHoconTest extends Assert {
     static class SimpleClass {
         public int publicInt = 5;
+        @Comment("this is private boolean value")
         private Boolean privateBoolean = true;
 
+        @CommentDefaultValue
         int[] intArray = new int[]{1, 2, 3};
 
         Map<String, Integer> stringIntMap = new HashMap<>();
