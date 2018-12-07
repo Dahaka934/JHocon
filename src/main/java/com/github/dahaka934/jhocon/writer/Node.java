@@ -24,7 +24,11 @@ class Node {
     }
 
     void comment(String comment) {
-        this.comment = comment;
+        if (comment != null && this.comment != null) {
+            this.comment += '\n' + comment;
+        } else {
+            this.comment = comment;
+        }
     }
 
     void put(Object value) {
