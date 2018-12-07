@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 /**
  * Allows to make some action before writing value to {@link JsonWriter}
- * or after reading value from {@link JsonReader}
+ * or after reading value from {@link JsonReader}.
  */
 public interface FieldHandler {
     /**
