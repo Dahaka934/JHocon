@@ -7,6 +7,11 @@ import com.google.gson.stream.JsonWriter;
 
 import java.lang.reflect.Field;
 
+/**
+ * Implementation for {@link Comment} annotation.
+ *
+ * @see Comment
+ */
 public class FieldHandlerComment implements FieldHandler {
     @Override
     public void onWrite(JsonWriter writer, Field field, Object value) {
