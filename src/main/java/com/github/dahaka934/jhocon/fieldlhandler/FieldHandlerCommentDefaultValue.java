@@ -16,8 +16,10 @@ public class FieldHandlerCommentDefaultValue implements FieldHandler {
     @Override
     public void onWrite(JsonWriter writer, Field field, Object value) {
         CommentDefaultValue comment = field.getAnnotation(CommentDefaultValue.class);
-        String line = "default value: " + JHoconHelper.objectToString(value);
-        JHoconHelper.comment(writer, line);
+        if (comment != null) {
+            String line = "default value: " + JHoconHelper.objectToString(value);
+            JHoconHelper.comment(writer, line);
+        }
     }
 
     @Override
