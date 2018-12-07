@@ -1,5 +1,6 @@
-package com.github.dahaka934.jhocon;
+package com.github.dahaka934.jhocon.internal;
 
+import com.github.dahaka934.jhocon.JHoconHelper;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
