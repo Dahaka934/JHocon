@@ -1,6 +1,7 @@
 package com.github.dahaka934.jhocon;
 
 import com.github.dahaka934.jhocon.writer.JHoconWriter;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonWriter;
 import com.typesafe.config.ConfigRenderOptions;
@@ -9,6 +10,15 @@ import com.typesafe.config.ConfigValue;
 public final class JHoconHelper {
     private JHoconHelper() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Register JHocon features in GsonBuilder.
+     */
+    public static GsonBuilder initBuilder(GsonBuilder builder) {
+        JHReflectTypeAdapterFactory factory = new JHReflectTypeAdapterFactory();
+        builder.registerTypeAdapterFactory(factory);
+        return builder;
     }
 
     /**
