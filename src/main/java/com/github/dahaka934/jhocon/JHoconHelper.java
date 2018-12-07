@@ -2,6 +2,7 @@ package com.github.dahaka934.jhocon;
 
 import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerComment;
 import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerCommentDefaultValue;
+import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerValidator;
 import com.github.dahaka934.jhocon.writer.JHoconWriter;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -20,9 +21,13 @@ public final class JHoconHelper {
      * Register JHocon features in GsonBuilder.
      */
     public static GsonBuilder initBuilder(GsonBuilder builder) {
+        FieldHandlerValidator validator = new FieldHandlerValidator(false);
+
         JHReflectTypeAdapterFactory factory = new JHReflectTypeAdapterFactory();
         factory.register(new FieldHandlerComment());
         factory.register(new FieldHandlerCommentDefaultValue());
+        factory.register(validator);
+
         builder.registerTypeAdapterFactory(factory);
         return builder;
     }
