@@ -38,12 +38,19 @@ public final class JHoconHelper {
     public static String renderConfig(ConfigValue configValue, ConfigRenderOptions opts) throws JsonSyntaxException {
         ConfigRenderOptions options = opts != null
             ? opts
-            : ConfigRenderOptions.defaults().setJson(false).setOriginComments(false);
+            : ConfigRenderOptions.defaults().setJson(false).setOriginComments(true);
+
+        String hocon;
         try {
-            return configValue.render(options);
+            hocon = configValue.render(options);
         } catch (Throwable throwable) {
             throw new JsonSyntaxException(throwable);
         }
+
+        // Config print '#  ' for empty comment. Try fix it.
+        hocon = hocon.replaceAll("[ ]+#\n", "");
+
+        return hocon;
     }
 
     /**
