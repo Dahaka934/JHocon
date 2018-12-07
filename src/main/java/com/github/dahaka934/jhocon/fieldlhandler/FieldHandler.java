@@ -14,7 +14,7 @@ public interface FieldHandler {
      * Action before writing field.
      *
      * @param field target field
-     * @param value target value
+     * @param value value of target field
      */
     void onWrite(JsonWriter writer, Field field, Object value);
 
