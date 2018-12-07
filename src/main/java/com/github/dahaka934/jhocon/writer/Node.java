@@ -34,6 +34,8 @@ class Node {
     }
 
     Object convert(Object value) {
+        String comment = this.comment != null ? this.comment : "";
+        this.comment = null;
         return ConfigValueFactory.fromAnyRef(value, comment);
     }
 
