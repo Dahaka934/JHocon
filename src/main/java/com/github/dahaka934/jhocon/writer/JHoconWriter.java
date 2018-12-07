@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonWriterStub;
  * Using for write object to specific structure instead of json.
  */
 public class JHoconWriter extends JsonWriterStub {
-    private Node curr = new Node();
+    private Node curr = new Node(null);
 
     /**
      * @return writing output

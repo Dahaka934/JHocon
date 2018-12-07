@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 class Node {
+    final Node prev;
     private Object cursor;
-    private Node prev;
     private boolean isEnd = false;
 
     enum Type {
@@ -67,11 +67,11 @@ class Node {
         return prev;
     }
 
-    boolean hasNext() throws IOException {
+    boolean hasNext() {
         return !isEnd && getCursor() != null;
     }
 
-    JsonToken peek() throws IOException {
+    JsonToken peek() {
         if (isEnd) {
             switch (getType()) {
                 case OBJECT:
@@ -100,8 +100,8 @@ class Node {
         return JsonToken.NULL;
     }
 
-    String nextName() throws IOException {
-        throw new IOException("Root node haven't name property");
+    String nextName() {
+        return null;
     }
 
     void nextNull() throws IOException {
@@ -168,7 +168,7 @@ class Node {
         return ret;
     }
 
-    String getPath() {
-        return "Unsupported operation";
+    void buildPath(StringBuilder buf) {
+        
     }
 }

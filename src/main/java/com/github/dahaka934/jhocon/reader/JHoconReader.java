@@ -83,7 +83,9 @@ public class JHoconReader extends JsonReaderStub {
 
     @Override
     public String getPath() {
-        return curr.getPath();
+        StringBuilder builder = new StringBuilder();
+        curr.buildPath(builder);
+        return builder.toString();
     }
 
     @Override

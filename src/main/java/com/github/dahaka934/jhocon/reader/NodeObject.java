@@ -1,6 +1,5 @@
 package com.github.dahaka934.jhocon.reader;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -8,7 +7,7 @@ class NodeObject extends Node {
     private Iterator<String> iteratorKeys;
     private Iterator<Object> iteratorValues;
 
-    private Object keyCursor;
+    private String keyCursor;
     private boolean isKeyCursor = false;
 
     @SuppressWarnings("unchecked")
@@ -26,7 +25,7 @@ class NodeObject extends Node {
     @Override
     void signalReadMap() {
         isKeyCursor = true;
-        keyCursor = iteratorKeys.hasNext() ? iteratorKeys.next() : null;
+        nextName();
     }
 
     @Override
@@ -35,7 +34,7 @@ class NodeObject extends Node {
     }
 
     @Override
-    void nextElement() throws IOException {
+    void nextElement() {
         if (isKeyCursor) {
             isKeyCursor = false;
         } else {
@@ -44,7 +43,14 @@ class NodeObject extends Node {
     }
 
     @Override
-    String nextName() throws IOException {
-        return (iteratorKeys.hasNext()) ? iteratorKeys.next() : "unnamed";
+    String nextName() {
+        keyCursor = iteratorKeys.hasNext() ? iteratorKeys.next() : null;
+        return keyCursor;
+    }
+
+    @Override
+    void buildPath(StringBuilder buf) {
+        prev.buildPath(buf);
+        buf.append('.').append(keyCursor);
     }
 }

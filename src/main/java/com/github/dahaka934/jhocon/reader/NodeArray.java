@@ -1,28 +1,35 @@
 package com.github.dahaka934.jhocon.reader;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 class NodeArray extends Node {
-    private Iterator<Object> iteratorValues;
+    private List<Object> list;
+    private int index = 0;
 
     @SuppressWarnings("unchecked")
     NodeArray(Node prev, Object value) {
         super(prev, null);
-        iteratorValues = ((List<Object>) value).iterator();
-        setCursor(iteratorValues.hasNext() ? iteratorValues.next() : null);
+        list = (List<Object>) value;
+        nextElement();
     }
 
     @Override
     Type getType() { return Type.ARRAY; }
 
     @Override
-    void nextElement() throws IOException {
-        setCursor(iteratorValues.hasNext() ? iteratorValues.next() : null);
+    void nextElement() {
+        setCursor(index < list.size() ? list.get(index) : null);
+        ++index;
     }
 
-    String nextName() throws IOException {
-        throw new IOException("Array node haven't name property");
+    @Override
+    String nextName() {
+        return null;
+    }
+
+    @Override
+    void buildPath(StringBuilder buf) {
+        prev.buildPath(buf);
+        buf.append('[').append(index - 1).append(']');
     }
 }

@@ -5,11 +5,9 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValueFactory;
 
 class Node {
+    final Node prev;
     private Object value;
     private String comment = null;
-    private Node prev = this;
-
-    Node() {}
 
     Node(Node prev) {
         this.prev = prev;
