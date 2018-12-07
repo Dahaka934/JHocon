@@ -15,8 +15,7 @@ import java.lang.reflect.Field;
 public class FieldHandlerCommentDefaultValue implements FieldHandler {
     @Override
     public void onWrite(JsonWriter writer, Field field, Object value) {
-        CommentDefaultValue comment = field.getAnnotation(CommentDefaultValue.class);
-        if (comment != null) {
+        if (field.getAnnotation(CommentDefaultValue.class) != null) {
             String line = "default value: " + JHoconHelper.objectToString(value);
             JHoconHelper.comment(writer, line);
         }
