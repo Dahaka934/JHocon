@@ -1,60 +1,13 @@
 package com.github.dahaka934.jhocon;
 
-import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerComment;
-import com.github.dahaka934.jhocon.fieldlhandler.FieldHandlerValidator;
-import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorCustomAnnotation;
-import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorList;
-import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorRange;
 import com.github.dahaka934.jhocon.writer.JHoconWriter;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonWriter;
-import com.typesafe.config.ConfigRenderOptions;
-import com.typesafe.config.ConfigValue;
 
 import java.util.Arrays;
 
 public final class JHoconHelper {
     private JHoconHelper() {
         throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Register JHocon features in GsonBuilder.
-     */
-    public static GsonBuilder initBuilder(GsonBuilder builder) {
-        FieldHandlerValidator validator = new FieldHandlerValidator(false);
-        validator.register(new FieldValidatorCustomAnnotation());
-        validator.register(new FieldValidatorRange());
-        validator.register(new FieldValidatorList());
-
-        JHReflectTypeAdapterFactory factory = new JHReflectTypeAdapterFactory();
-        factory.register(new FieldHandlerComment());
-        factory.register(validator);
-
-        builder.registerTypeAdapterFactory(factory);
-        return builder;
-    }
-
-    /**
-     * Renders the config value to a string, using the provided options.
-     */
-    public static String renderConfig(ConfigValue configValue, ConfigRenderOptions opts) throws JsonSyntaxException {
-        ConfigRenderOptions options = opts != null
-            ? opts
-            : ConfigRenderOptions.defaults().setJson(false).setOriginComments(true);
-
-        String hocon;
-        try {
-            hocon = configValue.render(options);
-        } catch (Throwable throwable) {
-            throw new JsonSyntaxException(throwable);
-        }
-
-        // Config print '#  ' for empty comment. Try fix it.
-        hocon = hocon.replaceAll("[ ]+#\n", "");
-
-        return hocon;
     }
 
     /**

@@ -21,9 +21,15 @@ import java.util.Map;
  */
 public final class JHocon {
     public final Gson gson;
+    private final ConfigRenderOptions opts;
+
+    public JHocon(Gson gson, boolean withComments) {
+        this.gson = gson;
+        opts = ConfigRenderOptions.defaults().setJson(false).setOriginComments(withComments);
+    }
 
     public JHocon(Gson gson) {
-        this.gson = gson;
+        this(gson, false);
     }
 
     /**
@@ -36,7 +42,7 @@ public final class JHocon {
      * @throws JsonIOException if there was a problem writing to the writer
      */
     public Object toObjectTree(Object src, Type typeOfSrc) throws JsonIOException {
-        JHoconWriter writer = new JHoconWriter();
+        JHoconWriter writer = new JHoconWriter(opts.getOriginComments());
         gson.toJson(src, typeOfSrc, writer);
         return writer.output();
     }
@@ -139,7 +145,18 @@ public final class JHocon {
      */
     public String toHocon(String name, Object src, Type typeOfSrc, ConfigRenderOptions opts) throws JsonIOException {
         Config config = toConfig(name, src, typeOfSrc);
-        return JHoconHelper.renderConfig(config.root(), opts);
+
+        String hocon;
+        try {
+            hocon = config.root().render(opts);
+        } catch (Throwable throwable) {
+            throw new JsonSyntaxException(throwable);
+        }
+
+        // Config print '#  ' for empty comment. Try fix it.
+        hocon = hocon.replaceAll("[ ]+#\n", "");
+
+        return hocon;
     }
 
     /**

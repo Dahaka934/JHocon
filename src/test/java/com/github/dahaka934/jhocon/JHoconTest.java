@@ -57,7 +57,6 @@ public class JHoconTest extends Assert {
 
     private Gson createGson() {
         GsonBuilder builder = new GsonBuilder();
-        JHoconHelper.initBuilder(builder);
         return builder.create();
     }
 

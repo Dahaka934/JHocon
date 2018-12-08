@@ -8,6 +8,11 @@ import com.google.gson.stream.JsonWriterStub;
  */
 public class JHoconWriter extends JsonWriterStub {
     private Node curr = new Node(null);
+    private final boolean withComments;
+
+    public JHoconWriter(boolean withComments) {
+        this.withComments = withComments;
+    }
 
     /**
      * @return writing output
@@ -20,7 +25,9 @@ public class JHoconWriter extends JsonWriterStub {
      * Set comment to current node.
      */
     public void comment(String comment) {
-        curr.comment(comment);
+        if (withComments) {
+            curr.comment(comment);
+        }
     }
 
     @Override
