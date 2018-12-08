@@ -31,7 +31,7 @@ dependencies {
 }
 
 group = 'com.github.dahaka934'
-version = '0.0.2'
+version = '0.1.0'
 description = 'Gson wrapper for Typesafe Config (HOCON)'
 
 ext {
