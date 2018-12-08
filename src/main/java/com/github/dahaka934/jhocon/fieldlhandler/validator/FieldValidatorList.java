@@ -26,7 +26,7 @@ public class FieldValidatorList implements FieldValidator {
 
     @Override
     public String getComment(Field field, Object value) {
-        if (value instanceof String) {
+        if (String.class.isAssignableFrom(field.getType())) {
             ValidatorStringList ann = field.getAnnotation(ValidatorStringList.class);
             if (ann != null) {
                 StringBuilder b = new StringBuilder("valid values: ");

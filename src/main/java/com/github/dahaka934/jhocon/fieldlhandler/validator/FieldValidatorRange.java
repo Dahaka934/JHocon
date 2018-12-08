@@ -2,6 +2,7 @@ package com.github.dahaka934.jhocon.fieldlhandler.validator;
 
 import com.github.dahaka934.jhocon.annotations.ValidatorDoubleRange;
 import com.github.dahaka934.jhocon.annotations.ValidatorRange;
+import com.google.gson.internal.Primitives;
 
 import java.lang.reflect.Field;
 
@@ -32,7 +33,7 @@ public class FieldValidatorRange implements FieldValidator {
     @Override
     public String getComment(Field field, Object value) {
         String comment = "valid range";
-        if (value instanceof Number) {
+        if (Number.class.isAssignableFrom(Primitives.wrap(field.getType()))) {
             ValidatorRange ann1 = field.getAnnotation(ValidatorRange.class);
             if (ann1 != null) {
                 return String.format(comment + ": [%d, %d]", ann1.min(), ann1.max());
