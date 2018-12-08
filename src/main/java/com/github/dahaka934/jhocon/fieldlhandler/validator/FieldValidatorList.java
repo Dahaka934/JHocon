@@ -18,7 +18,7 @@ public class FieldValidatorList implements FieldValidator {
             String str = (String) value;
             ValidatorStringList ann = field.getAnnotation(ValidatorStringList.class);
             if (ann != null) {
-                return Arrays.asList(ann.value()).contains(str);
+                return !ann.invert() == Arrays.asList(ann.value()).contains(str);
             }
         }
         return true;
@@ -29,7 +29,11 @@ public class FieldValidatorList implements FieldValidator {
         if (value instanceof String) {
             ValidatorStringList ann = field.getAnnotation(ValidatorStringList.class);
             if (ann != null) {
-                return "valid values: " + Arrays.toString(ann.value());
+                StringBuilder b = new StringBuilder("valid values: ");
+                if (ann.invert()) {
+                    b.append("not ");
+                }
+                return b.append(Arrays.toString(ann.value())).toString();
             }
         }
         return null;

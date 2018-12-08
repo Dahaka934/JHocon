@@ -20,4 +20,6 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 public @interface ValidatorStringList {
     String[] value() default {};
+
+    boolean invert() default false;
 }
