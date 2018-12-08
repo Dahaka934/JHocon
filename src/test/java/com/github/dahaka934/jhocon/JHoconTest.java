@@ -3,8 +3,6 @@ package com.github.dahaka934.jhocon;
 import com.github.dahaka934.jhocon.annotations.Comment;
 import com.github.dahaka934.jhocon.annotations.ValidatorDoubleRange;
 import com.github.dahaka934.jhocon.internal.TestTypeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
@@ -55,14 +53,9 @@ public class JHoconTest extends Assert {
         String str = "some text";
     }
 
-    private Gson createGson() {
-        GsonBuilder builder = new GsonBuilder();
-        return builder.create();
-    }
-
     @Test
     public void testNonGenericObject() {
-        JHocon jhocon = new JHocon(createGson());
+        JHocon jhocon = new JHoconBuilder().registerDefaultValidators().withComments().create();
         SimpleClass obj = new SimpleClass();
         obj.reinit();
 
@@ -83,7 +76,7 @@ public class JHoconTest extends Assert {
 
     @Test
     public void testGenericObject() {
-        JHocon jhocon = new JHocon(createGson());
+        JHocon jhocon = new JHoconBuilder().registerDefaultValidators().withComments().create();
         Map<String, SimpleClass> obj = new HashMap<>();
         obj.put("default", new SimpleClass());
         obj.put("reinited", new SimpleClass().reinit());

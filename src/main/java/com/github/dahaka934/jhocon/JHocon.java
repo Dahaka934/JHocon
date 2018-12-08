@@ -139,11 +139,10 @@ public final class JHocon {
      * @param name      the name of hocon object
      * @param src       the generic object for which HOCON representation is to be created
      * @param typeOfSrc the specific genericized type of {@code src}
-     * @param opts      the specific render options
      * @return HOCON representation of {@code src}
      * @throws JsonIOException if there was a problem writing to the writer
      */
-    public String toHocon(String name, Object src, Type typeOfSrc, ConfigRenderOptions opts) throws JsonIOException {
+    public String toHocon(String name, Object src, Type typeOfSrc) throws JsonIOException {
         Config config = toConfig(name, src, typeOfSrc);
 
         String hocon;
@@ -165,27 +164,12 @@ public final class JHocon {
      *
      * @param name the name of hocon object
      * @param src  the non-generic object for which HOCON representation is to be created
-     * @param opts the specific render options
      * @return HOCON representation of {@code src}
      * @throws JsonIOException if there was a problem writing to the writer
      */
-    public String toHocon(String name, Object src, ConfigRenderOptions opts) throws JsonIOException {
-        Object obj = safeObject(src);
-        return toHocon(name, obj, obj.getClass(), opts);
-    }
-
-    /**
-     * @see JHocon#toHocon(String, Object, Type, ConfigRenderOptions)
-     */
-    public String toHocon(String name, Object src, Type typeOfSrc) throws JsonIOException {
-        return toHocon(name, src, typeOfSrc, null);
-    }
-
-    /**
-     * @see JHocon#toHocon(String, Object, Type, ConfigRenderOptions)
-     */
     public String toHocon(String name, Object src) throws JsonIOException {
-        return toHocon(name, src, (ConfigRenderOptions) null);
+        Object obj = safeObject(src);
+        return toHocon(name, obj, obj.getClass());
     }
 
     /**
