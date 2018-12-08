@@ -6,13 +6,13 @@ import com.google.gson.GsonBuilder;
 import java.lang.annotation.*;
 
 /**
- * This is annotation used for setting a comment above the field.
- * Used only if {@link JHReflectTypeAdapterFactory} is registered in {@link GsonBuilder}.
- * You can use '$value' for inline current field's value to comment line.
+ * This is annotation used for setting a comment above the field.<br/>
+ * Used only if {@link JHReflectTypeAdapterFactory} is registered in {@link GsonBuilder}.<br/>
+ * You can use '$value' for inline default field value to comment line.<br/>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Comment {
-    String value() default "";
+    String value() default "default value: $value";
 }

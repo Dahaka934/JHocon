@@ -2,7 +2,6 @@ package com.github.dahaka934.jhocon.fieldlhandler;
 
 import com.github.dahaka934.jhocon.JHoconHelper;
 import com.github.dahaka934.jhocon.annotations.Comment;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.lang.reflect.Field;
@@ -14,7 +13,7 @@ import java.lang.reflect.Field;
  */
 public class FieldHandlerComment implements FieldHandler {
     @Override
-    public void onWrite(JsonWriter writer, Field field, Object value) {
+    public Object onWrite(JsonWriter writer, Field field, Object value) {
         Comment ann = field.getAnnotation(Comment.class);
         if (ann != null) {
             String line = ann.value();
@@ -23,10 +22,6 @@ public class FieldHandlerComment implements FieldHandler {
             }
             JHoconHelper.comment(writer, line);
         }
-    }
-
-    @Override
-    public Object onRead(JsonReader reader, Field field, Object value) {
         return value;
     }
 }

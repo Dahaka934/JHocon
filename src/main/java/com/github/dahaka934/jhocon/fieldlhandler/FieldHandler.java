@@ -15,8 +15,9 @@ public interface FieldHandler {
      *
      * @param field target field
      * @param value value of target field
+     * @return the new value
      */
-    void onWrite(JsonWriter writer, Field field, Object value);
+    Object onWrite(JsonWriter writer, Field field, Object value);
 
     /**
      * Action after reading value from {@code reader} and before writing {@code value} to {@code field}.
@@ -26,5 +27,7 @@ public interface FieldHandler {
      * @param value the read value
      * @return the new value
      */
-    Object onRead(JsonReader reader, Field field, Object value);
+    default Object onRead(JsonReader reader, Field field, Object value) {
+        return value;
+    }
 }

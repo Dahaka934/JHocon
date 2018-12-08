@@ -28,7 +28,7 @@ public class JHReflectTypeAdapterFactory extends ReflectiveTypeAdapterFactoryEx 
     @SuppressWarnings("unchecked")
     public void writeField(JsonWriter writer, TypeAdapter adapter, Field field, Object value) throws IOException {
         for (FieldHandler it : handlers) {
-            it.onWrite(writer, field, value);
+            value = it.onWrite(writer, field, value);
         }
         adapter.write(writer, value);
     }
@@ -37,6 +37,9 @@ public class JHReflectTypeAdapterFactory extends ReflectiveTypeAdapterFactoryEx 
     public Object readField(JsonReader reader, TypeAdapter adapter, Field field) throws IOException {
         Object ret = adapter.read(reader);
         for (FieldHandler it : handlers) {
+            if (ret == null) {
+                break;
+            }
             ret = it.onRead(reader, field, ret);
         }
         return ret;

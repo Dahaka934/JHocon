@@ -6,6 +6,11 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation for {@link ValidatorCustom} annotation.
+ *
+ * @see ValidatorCustom
+ */
 public class FieldValidatorCustomAnnotation implements FieldValidator {
 
     protected final Map<Class<? extends FieldValidator>, FieldValidator> validators = new HashMap<>();
@@ -32,12 +37,6 @@ public class FieldValidatorCustomAnnotation implements FieldValidator {
     public boolean isValid(Field field, Object value) {
         FieldValidator it = getValidator(field);
         return (it != null) ? it.isValid(field, value) : true;
-    }
-
-    @Override
-    public Object toValidValue(Field field, Object value) {
-        FieldValidator it = getValidator(field);
-        return (it != null) ? it.toValidValue(field, value) : value;
     }
 
     @Override

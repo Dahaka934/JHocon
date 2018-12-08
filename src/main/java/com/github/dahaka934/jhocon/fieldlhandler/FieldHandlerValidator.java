@@ -34,13 +34,14 @@ public class FieldHandlerValidator implements FieldHandler {
     }
 
     @Override
-    public void onWrite(JsonWriter writer, Field field, Object value) {
+    public Object onWrite(JsonWriter writer, Field field, Object value) {
         for (FieldValidator it : validators) {
             String comment = it.getComment(field, value);
             if (comment != null && !comment.isEmpty()) {
                 JHoconHelper.comment(writer, comment);
             }
         }
+        return value;
     }
 
     @Override
@@ -48,17 +49,17 @@ public class FieldHandlerValidator implements FieldHandler {
         for (FieldValidator it : validators) {
             if (!it.isValid(field, value)) {
                 if (throwErrorOnFail) {
-                    throw new Error(errorMessage(reader, field, value));
+                    throw new Error(errorMessage(reader, value));
                 } else {
-                    logger.log(Level.WARNING, errorMessage(reader, field, value));
+                    logger.log(Level.WARNING, errorMessage(reader, value));
                 }
-                value = it.toValidValue(field, value);
+                return null;
             }
         }
         return value;
     }
 
-    protected String errorMessage(JsonReader reader, Field field, Object value) {
+    protected String errorMessage(JsonReader reader, Object value) {
         return String.format("Field '%s' has incorrect value (%s)",
             reader.getPath(), JHoconHelper.objectToString(value));
     }

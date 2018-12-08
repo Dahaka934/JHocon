@@ -17,13 +17,6 @@ public interface FieldValidator {
     boolean isValid(Field field, Object value);
 
     /**
-     * @param field target field
-     * @param value the read value
-     * @return valid value
-     */
-    Object toValidValue(Field field, Object value);
-
-    /**
      * Defines a comment in config for this validator.
      *
      * @param field target field
