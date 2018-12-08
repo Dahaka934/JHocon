@@ -22,7 +22,7 @@ public final class Person {
 ```
 ### Converting non-generic object
 ```java
-JHocon jhocon = new JHocon(new Gson());
+JHocon jhocon = new JHoconBuilder().create();
 Person person = new Person("foo", 20);
 
 // Convert non-generic object to HOCON-string representation
@@ -41,7 +41,7 @@ person {
 
 ### Converting generic object
 ```java
-JHocon jhocon = new JHocon(new Gson());
+JHocon jhocon = new JHoconBuilder().create();
 List<Person> family = new ArrayList<>();
 family.add(new Person("foo", 20));
 family.add(new Person("bar", 25));
@@ -66,18 +66,29 @@ family=[
     }
 ]
 ```
-### Add comments in own TypeAdapter
+### Comments and field validators
+Add special annotations above the class fields. And enable comments and default validators
+in `JHoconBuilder`. Also, you can register custom field handlers and field annotations.
+You can see more in tests.
 ```java
-public class TestTypeAdapter extends TypeAdapter<String> {
-    @Override
-    public void write(JsonWriter out, String value) throws IOException {
-        if (value == null) {
-            out.nullValue();
-            return;
-        }
-        JHocon.setComment(out, "own comment");
-        out.value(value);
-    }
-    // ...
+@Comment("person name")
+@ValidatorStringList(value = {"reserved"}, invert = true)
+public String name;
+@Comment
+@ValidatorRange(min = 0, max = 150)
+public int age;
+
+// ...
+new JHoconBuilder().withComments().registerDefaultValidators().create();
+```
+```hocon
+person {
+    # default value: 20
+    # valid range: [0, 150]
+    age=20
+    # person name
+    # valid values: not [reserved]
+    name=foo
 }
 ```
+
