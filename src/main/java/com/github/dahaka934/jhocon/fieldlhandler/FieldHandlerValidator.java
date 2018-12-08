@@ -15,14 +15,10 @@ import java.util.logging.Logger;
  * Common implementation for field validation.
  */
 public class FieldHandlerValidator implements FieldHandler {
-
-    protected final boolean throwErrorOnFail;
     protected final List<FieldValidator> validators = new ArrayList<>();
     protected final Logger logger = Logger.getLogger("JHoconFieldValidator");
 
-    public FieldHandlerValidator(boolean throwErrorOnFail) {
-        this.throwErrorOnFail = throwErrorOnFail;
-    }
+    public boolean throwErrorOnFail = true;
 
     /**
      * Register custom {@link FieldValidator}.
@@ -49,7 +45,7 @@ public class FieldHandlerValidator implements FieldHandler {
         for (FieldValidator it : validators) {
             if (!it.isValid(field, value)) {
                 if (throwErrorOnFail) {
-                    throw new Error(errorMessage(reader, value));
+                    throw new FieldHandlerValidator.Exception(errorMessage(reader, value));
                 } else {
                     logger.log(Level.WARNING, errorMessage(reader, value));
                 }
@@ -62,5 +58,11 @@ public class FieldHandlerValidator implements FieldHandler {
     protected String errorMessage(JsonReader reader, Object value) {
         return String.format("Field '%s' has incorrect value (%s)",
             reader.getPath(), JHoconHelper.objectToString(value));
+    }
+
+    public static class Exception extends RuntimeException {
+        public Exception(String errorMessage) {
+            super(errorMessage);
+        }
     }
 }
