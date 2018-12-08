@@ -19,7 +19,7 @@ public class FieldValidatorRange implements FieldValidator {
             Number n = (Number) value;
             ValidatorRange ann1 = field.getAnnotation(ValidatorRange.class);
             if (ann1 != null) {
-                return ann1.min() <= n.longValue() && n.longValue() <= ann1.max();
+                return ann1.min() <= n.intValue() && n.intValue() <= ann1.max();
             }
             ValidatorDoubleRange ann2 = field.getAnnotation(ValidatorDoubleRange.class);
             if (ann2 != null) {
