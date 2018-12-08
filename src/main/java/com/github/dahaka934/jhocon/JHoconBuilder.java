@@ -88,7 +88,7 @@ public final class JHoconBuilder {
     }
 
     public JHocon create() {
-        return new JHocon(gsonBuilder.create());
+        return new JHocon(gsonBuilder.create(), withComment);
     }
 
     private JHReflectTypeAdapterFactory getReflectFactory() {

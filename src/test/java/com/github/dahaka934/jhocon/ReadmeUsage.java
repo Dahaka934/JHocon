@@ -1,6 +1,7 @@
 package com.github.dahaka934.jhocon;
 
-import com.google.gson.Gson;
+import com.github.dahaka934.jhocon.annotations.Comment;
+import com.github.dahaka934.jhocon.annotations.ValidatorRange;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,10 @@ import java.util.List;
 
 public class ReadmeUsage extends Assert {
     public static final class Person {
+        @Comment("person name")
         public String name;
+        @Comment
+        @ValidatorRange(min = 0, max = 150)
         public int age;
 
         public Person(String name, int age) {
@@ -22,7 +26,7 @@ public class ReadmeUsage extends Assert {
 
     @Test
     public void testObject() {
-        JHocon jhocon = new JHocon(new Gson());
+        JHocon jhocon = new JHoconBuilder().withComments().registerDefaultValidators().create();
         Person person = new Person("foo", 20);
 
         // Convert non-generic object to HOCON-string representation
@@ -38,7 +42,7 @@ public class ReadmeUsage extends Assert {
 
     @Test
     public void testCollection() {
-        JHocon jhocon = new JHocon(new Gson());
+        JHocon jhocon = new JHoconBuilder().withComments().registerDefaultValidators().create();
         List<Person> family = new ArrayList<>();
         family.add(new Person("foo", 20));
         family.add(new Person("bar", 25));

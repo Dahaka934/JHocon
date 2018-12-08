@@ -1,9 +1,5 @@
 package com.github.dahaka934.jhocon;
 
-import com.github.dahaka934.jhocon.annotations.Comment;
-import com.github.dahaka934.jhocon.annotations.ValidatorDoubleRange;
-import com.github.dahaka934.jhocon.internal.TestTypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,14 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JHoconTest extends Assert {
+public class TestSerialization extends Assert {
     static class SimpleClass {
-        @ValidatorDoubleRange(max = 5)
         public int publicInt = 5;
-        @Comment("this is private boolean value")
         private Boolean privateBoolean = true;
-
-        @Comment
         int[] intArray = new int[]{1, 2, 3};
 
         Map<String, Integer> stringIntMap = new HashMap<>();
@@ -49,13 +41,12 @@ public class JHoconTest extends Assert {
     }
 
     static class SimpleSubClass {
-        @JsonAdapter(TestTypeAdapter.class)
         String str = "some text";
     }
 
     @Test
     public void testNonGenericObject() {
-        JHocon jhocon = new JHoconBuilder().registerDefaultValidators().withComments().create();
+        JHocon jhocon = new JHoconBuilder().create();
         SimpleClass obj = new SimpleClass();
         obj.reinit();
 
@@ -76,7 +67,7 @@ public class JHoconTest extends Assert {
 
     @Test
     public void testGenericObject() {
-        JHocon jhocon = new JHoconBuilder().registerDefaultValidators().withComments().create();
+        JHocon jhocon = new JHoconBuilder().create();
         Map<String, SimpleClass> obj = new HashMap<>();
         obj.put("default", new SimpleClass());
         obj.put("reinited", new SimpleClass().reinit());
