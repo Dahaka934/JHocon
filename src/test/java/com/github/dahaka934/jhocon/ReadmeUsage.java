@@ -2,6 +2,7 @@ package com.github.dahaka934.jhocon;
 
 import com.github.dahaka934.jhocon.annotations.Comment;
 import com.github.dahaka934.jhocon.annotations.ValidatorRange;
+import com.github.dahaka934.jhocon.annotations.ValidatorStringList;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ReadmeUsage extends Assert {
     public static final class Person {
         @Comment("person name")
+        @ValidatorStringList(value = {"reserved"}, invert = true)
         public String name;
         @Comment
         @ValidatorRange(min = 0, max = 150)
