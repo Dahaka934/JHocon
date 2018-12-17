@@ -1,6 +1,8 @@
 package com.github.dahaka934.jhocon;
 
 import com.github.dahaka934.jhocon.fieldlhandler.FieldHandler;
+import com.github.dahaka934.jhocon.reader.JHoconReader;
+import com.github.dahaka934.jhocon.writer.JHoconWriter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.internal.bind.ReflectiveTypeAdapterFactoryEx;
 import com.google.gson.stream.JsonReader;
@@ -27,8 +29,10 @@ public class JHReflectTypeAdapterFactory extends ReflectiveTypeAdapterFactoryEx 
     @Override
     @SuppressWarnings("unchecked")
     public void writeField(JsonWriter writer, TypeAdapter adapter, Field field, Object value) throws IOException {
-        for (FieldHandler it : handlers) {
-            value = it.onWrite(writer, field, value);
+        if (writer instanceof JHoconWriter) {
+            for (FieldHandler it : handlers) {
+                value = it.onWrite(writer, field, value);
+            }
         }
         adapter.write(writer, value);
     }
@@ -36,11 +40,13 @@ public class JHReflectTypeAdapterFactory extends ReflectiveTypeAdapterFactoryEx 
     @Override
     public Object readField(JsonReader reader, TypeAdapter adapter, Field field) throws IOException {
         Object ret = adapter.read(reader);
-        for (FieldHandler it : handlers) {
-            if (ret == null) {
-                break;
+        if (reader instanceof JHoconReader) {
+            for (FieldHandler it : handlers) {
+                if (ret == null) {
+                    break;
+                }
+                ret = it.onRead(reader, field, ret);
             }
-            ret = it.onRead(reader, field, ret);
         }
         return ret;
     }
