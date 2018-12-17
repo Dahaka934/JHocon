@@ -82,6 +82,11 @@ public class JHoconReader extends JsonReaderStub {
     }
 
     @Override
+    public void skipValue() throws IOException {
+        curr.skipValue();
+    }
+
+    @Override
     public String getPath() {
         StringBuilder builder = new StringBuilder();
         curr.buildPath(builder);
@@ -90,9 +95,6 @@ public class JHoconReader extends JsonReaderStub {
 
     @Override
     public void close() throws IOException {}
-
-    @Override
-    public void skipValue() throws IOException { }
 
     @Override
     public String toString() {

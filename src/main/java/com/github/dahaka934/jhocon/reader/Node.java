@@ -168,7 +168,12 @@ class Node {
         return ret;
     }
 
+    void skipValue() throws IOException {
+        assertEnd();
+        nextElement();
+    }
+
     void buildPath(StringBuilder buf) {
-        
+
     }
 }
