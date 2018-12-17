@@ -8,6 +8,7 @@ import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorCustomA
 import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorList;
 import com.github.dahaka934.jhocon.fieldlhandler.validator.FieldValidatorRange;
 import com.google.gson.GsonBuilder;
+import com.typesafe.config.ConfigResolveOptions;
 
 /**
  * Builder for construct instance of {@link JHocon}.
@@ -16,6 +17,7 @@ public final class JHoconBuilder {
     public final GsonBuilder gsonBuilder;
     private JHReflectTypeAdapterFactory customReflectFactory;
     private FieldHandlerValidator handlerValidator;
+    private ConfigResolveOptions resolveOptions;
     private boolean withComment = false;
 
     public JHoconBuilder(GsonBuilder gsonBuilder) {
@@ -87,8 +89,17 @@ public final class JHoconBuilder {
         return this;
     }
 
+    /**
+     * Setting custom resolve options
+     */
+    public JHoconBuilder withOptions(ConfigResolveOptions opts) {
+        resolveOptions = opts;
+        return this;
+    }
+
     public JHocon create() {
-        return new JHocon(gsonBuilder.create(), withComment);
+        ConfigResolveOptions opts = resolveOptions != null ? resolveOptions : ConfigResolveOptions.defaults();
+        return new JHocon(gsonBuilder.create(), opts, withComment);
     }
 
     private JHReflectTypeAdapterFactory getReflectFactory() {

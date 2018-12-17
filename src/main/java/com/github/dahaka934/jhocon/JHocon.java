@@ -21,15 +21,17 @@ import java.util.Map;
  */
 public final class JHocon {
     public final Gson gson;
-    private final ConfigRenderOptions opts;
+    private final ConfigRenderOptions renderOptions;
+    private final ConfigResolveOptions resolveOptions;
 
-    public JHocon(Gson gson, boolean withComments) {
+    public JHocon(Gson gson, ConfigResolveOptions resolveOptions, boolean withComments) {
         this.gson = gson;
-        opts = ConfigRenderOptions.defaults().setJson(false).setOriginComments(withComments);
+        this.resolveOptions = resolveOptions;
+        renderOptions = ConfigRenderOptions.defaults().setJson(false).setOriginComments(withComments);
     }
 
     public JHocon(Gson gson) {
-        this(gson, false);
+        this(gson, ConfigResolveOptions.defaults(), false);
     }
 
     /**
@@ -42,7 +44,7 @@ public final class JHocon {
      * @throws JsonIOException if there was a problem writing to the writer
      */
     public Object toObjectTree(Object src, Type typeOfSrc) throws JsonIOException {
-        JHoconWriter writer = new JHoconWriter(opts.getOriginComments());
+        JHoconWriter writer = new JHoconWriter(renderOptions.getOriginComments());
         gson.toJson(src, typeOfSrc, writer);
         return writer.output();
     }
@@ -147,7 +149,7 @@ public final class JHocon {
 
         String hocon;
         try {
-            hocon = config.root().render(opts);
+            hocon = config.root().render(renderOptions);
         } catch (Throwable throwable) {
             throw new JsonSyntaxException(throwable);
         }
@@ -219,7 +221,7 @@ public final class JHocon {
     public <T> T fromHocon(String hocon, String name, Type typeOfT) throws JsonSyntaxException {
         ConfigValue config;
         try {
-            config = ConfigFactory.parseString(hocon).getValue(name);
+            config = ConfigFactory.parseString(hocon).resolve(resolveOptions).getValue(name);
         } catch (Exception e) {
             throw new JsonSyntaxException(e);
         }
