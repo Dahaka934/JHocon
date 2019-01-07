@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.*;
 import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter;
 import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.BoundField;
-import com.google.gson.internal.reflect.ReflectionAccessor;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -31,14 +30,13 @@ public abstract class ReflectiveTypeAdapterFactoryEx implements TypeAdapterFacto
     protected FieldNamingStrategy fieldNamingPolicy;
     protected Excluder excluder;
     protected JsonAdapterAnnotationTypeAdapterFactory jsonAdapterFactory;
-    protected final ReflectionAccessor accessor = ReflectionAccessor.getInstance();
 
     private boolean isInited = false;
 
     @SuppressWarnings("unchecked")
     private <I, T> T getFieldValue(I instance, String fieldName) throws NoSuchFieldException, IllegalAccessException {
         Field field = instance.getClass().getDeclaredField(fieldName);
-        accessor.makeAccessible(field);
+        field.setAccessible(true);
         return (T) field.get(instance);
     }
 
@@ -170,7 +168,7 @@ public abstract class ReflectiveTypeAdapterFactoryEx implements TypeAdapterFacto
                 if (!serialize && !deserialize) {
                     continue;
                 }
-                accessor.makeAccessible(field);
+                field.setAccessible(true);
                 Type fieldType = $Gson$Types.resolve(type.getType(), raw, field.getGenericType());
                 List<String> fieldNames = getFieldNames(field);
                 BoundField previous = null;
