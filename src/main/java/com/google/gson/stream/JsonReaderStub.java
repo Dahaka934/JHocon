@@ -4,6 +4,7 @@ import com.google.gson.internal.reflect.ReflectionAccessor;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class JsonReaderStub extends JsonReader {
@@ -19,9 +20,12 @@ public class JsonReaderStub extends JsonReader {
 
     static {
         try {
+            // Some hacks for java 11
             Method m = JsonReaderStub.class.getDeclaredMethod("doPeek");
+            Field f = JsonReader.class.getDeclaredField("peeked");
             ReflectionAccessor.getInstance().makeAccessible(m);
-        } catch (NoSuchMethodException e) {
+            ReflectionAccessor.getInstance().makeAccessible(f);
+        } catch (NoSuchMethodException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
